@@ -104,7 +104,13 @@ If Apple approves Multicast Networking later:
 
 `Libbox.xcframework` is required but ignored by Git. If it is missing, build it from the matching `SagerNet/sing-box` version.
 
-For the previously verified iOS archive, `Libbox.xcframework` was present at:
+For upstream `dev` version `1.14.0-alpha.27`, build libbox from:
+
+```text
+SagerNet/sing-box tag v1.14.0-alpha.27
+```
+
+The local `Libbox.xcframework` for the dev branch was rebuilt on 2026-05-31 and copied to:
 
 ```text
 /Users/yunshi/codes/sing-box-for-apple/Libbox.xcframework
@@ -117,7 +123,38 @@ ios-arm64
 ios-arm64_x86_64-simulator
 ```
 
+Using the older `v1.13.12` libbox with upstream `dev` causes Swift compile errors for missing APIs such as `LibboxCommandOutbounds`, `LibboxPlatformUser`, and crash/OOM-related libbox symbols.
+
+## Verified Dev Build Command
+
+From:
+
+```text
+/Users/yunshi/codes/sing-box-for-apple
+```
+
+Run:
+
+```bash
+xcodebuild build \
+  -project sing-box.xcodeproj \
+  -scheme SFI \
+  -configuration Release \
+  -destination 'generic/platform=iOS' \
+  -skipPackagePluginValidation \
+  -skipMacroValidation \
+  CODE_SIGNING_ALLOWED=NO
+```
+
+On 2026-05-31, after rebuilding `Libbox.xcframework` from `v1.14.0-alpha.27`, this completed with:
+
+```text
+** BUILD SUCCEEDED **
+```
+
 ## Verified Archive Command
+
+This archive result was verified before switching the fork from upstream `main` to upstream `dev`. Re-run it on the current `dev` branch when a signed TestFlight archive is needed.
 
 From:
 

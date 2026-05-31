@@ -26,5 +26,7 @@ The iOS packet tunnel extension currently does not include the Multicast Network
 ## Build Notes
 
 - `Libbox.xcframework` is required locally and is ignored by Git.
-- A signed iOS archive succeeded on 2026-05-31 with scheme `SFI`.
+- For upstream `dev` at `1.14.0-alpha.27`, use a `Libbox.xcframework` built from `SagerNet/sing-box` tag `v1.14.0-alpha.27`.
+- An unsigned iOS Release build succeeded on 2026-05-31 with scheme `SFI` after replacing libbox.
+- A signed iOS archive also succeeded earlier on 2026-05-31 with scheme `SFI` before switching the fork from upstream `main` to upstream `dev`.
 - Use `docs/ios-testflight-maintenance.md` for the full sync, rebase, and archive workflow.
