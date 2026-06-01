@@ -48,8 +48,7 @@ sing-box.xcodeproj/project.pbxproj
 During a rebase conflict, prefer keeping upstream's project structure first, then reapply Vince-specific values:
 
 ```text
-L922897LKX
-io.vince.sfavt
+io.vince.sfavt.app
 group.io.vince.sfavt
 iCloud.io.vince.sfavt
 ```
@@ -58,22 +57,18 @@ This matters because upstream `dev` may add new targets, build phases, or packag
 
 ## Vince Identifiers
 
-Apple Team ID:
-
-```text
-L922897LKX
-```
+Apple Team ID is configured in the Xcode project build settings. Do not record personal account identifiers in this document.
 
 Bundle identifiers:
 
 ```text
-io.vince.sfavt
-io.vince.sfavt.extension
-io.vince.sfavt.intents
+io.vince.sfavt.app
+io.vince.sfavt.app.extension
+io.vince.sfavt.app.intents
 io.vince.sfavt.standalone
 io.vince.sfavt.system
-io.vince.sfavt.widget
-io.vince.sfavt.fileprovider
+io.vince.sfavt.app.widget
+io.vince.sfavt.app.fileprovider
 ```
 
 Shared containers:
@@ -82,6 +77,24 @@ Shared containers:
 group.io.vince.sfavt
 iCloud.io.vince.sfavt
 ```
+
+The iOS targets also need:
+
+```text
+BASE_PACKAGE_IDENTIFIER = io.vince.sfavt.app
+APP_GROUP_IDENTIFIER = group.io.vince.sfavt
+ICLOUD_CONTAINER_IDENTIFIER = iCloud.io.vince.sfavt
+```
+
+`BasePackageIdentifier` is a runtime input, not just a label. It drives `AppConfiguration.extensionBundleID`, `widgetControlKind`, `fileProviderDomainID`, `profileUTType`, and `backgroundTaskID`. If the main app Bundle ID changes, update `BASE_PACKAGE_IDENTIFIER` for `SFI`, `Extension`, `IntentsExtension`, `WidgetExtension`, and `FileProviderExtension` at the same time.
+
+`SFI/Info.plist` keeps the iCloud ubiquitous container key as a literal:
+
+```text
+iCloud.io.vince.sfavt
+```
+
+Do not change it to `iCloud.$(BASE_PACKAGE_IDENTIFIER)` while the old iCloud container is intentionally reused.
 
 ## Multicast Networking
 
@@ -95,7 +108,7 @@ This entitlement requires Apple approval. It is not required for the basic Packe
 
 If Apple approves Multicast Networking later:
 
-1. Enable the capability for the relevant App ID, most likely `io.vince.sfavt.extension`.
+1. Enable the capability for the relevant App ID, most likely `io.vince.sfavt.app.extension`.
 2. Regenerate or refresh the provisioning profile.
 3. Re-add `com.apple.developer.networking.multicast` only to the target that needs it.
 4. Re-run a signed archive.
@@ -113,7 +126,7 @@ SagerNet/sing-box tag v1.14.0-alpha.27
 The local `Libbox.xcframework` for the dev branch was rebuilt on 2026-05-31 and copied to:
 
 ```text
-/Users/yunshi/codes/sing-box-for-apple/Libbox.xcframework
+<repo-root>/Libbox.xcframework
 ```
 
 It contained:
@@ -121,6 +134,9 @@ It contained:
 ```text
 ios-arm64
 ios-arm64_x86_64-simulator
+tvos-arm64
+tvos-arm64_x86_64-simulator
+macos-arm64_x86_64
 ```
 
 Using the older `v1.13.12` libbox with upstream `dev` causes Swift compile errors for missing APIs such as `LibboxCommandOutbounds`, `LibboxPlatformUser`, and crash/OOM-related libbox symbols.
@@ -130,7 +146,7 @@ Using the older `v1.13.12` libbox with upstream `dev` causes Swift compile error
 From:
 
 ```text
-/Users/yunshi/codes/sing-box-for-apple
+<repo-root>
 ```
 
 Run:
@@ -152,6 +168,97 @@ On 2026-05-31, after rebuilding `Libbox.xcframework` from `v1.14.0-alpha.27`, th
 ** BUILD SUCCEEDED **
 ```
 
+## Verified macOS Build Command
+
+From:
+
+```text
+<repo-root>
+```
+
+Run:
+
+```bash
+xcodebuild build \
+  -project sing-box.xcodeproj \
+  -scheme SFM \
+  -configuration Release \
+  -destination 'generic/platform=macOS' \
+  -derivedDataPath .derivedData-macos-SFM \
+  -skipPackagePluginValidation \
+  -skipMacroValidation \
+  CODE_SIGNING_ALLOWED=NO
+```
+
+On 2026-05-31, after rebuilding `Libbox.xcframework` from `v1.14.0-alpha.27` with the full Apple target, this completed with:
+
+```text
+** BUILD SUCCEEDED **
+```
+
+The local app product was generated at:
+
+```text
+<repo-root>/.derivedData-macos-SFM/Build/Products/Release/sing-box.app
+```
+
+The app executable is a universal macOS binary:
+
+```text
+x86_64
+arm64
+```
+
+This command verifies compilation only. A distributable macOS archive still needs signing, entitlements, and notarization checks.
+
+## Verified Signed macOS Build Command
+
+From:
+
+```text
+<repo-root>
+```
+
+Run:
+
+```bash
+xcodebuild build \
+  -project sing-box.xcodeproj \
+  -scheme SFM \
+  -configuration Release \
+  -destination 'generic/platform=macOS' \
+  -derivedDataPath .derivedData-macos-SFM-signed-check \
+  -skipPackagePluginValidation \
+  -skipMacroValidation
+```
+
+On 2026-05-31, this completed with:
+
+```text
+** BUILD SUCCEEDED **
+```
+
+Xcode used:
+
+```text
+Apple Development signing identity from the local keychain
+Mac Team Provisioning Profile: io.vince.sfavt
+```
+
+The signed app product was generated at:
+
+```text
+<repo-root>/.derivedData-macos-SFM-signed-check/Build/Products/Release/sing-box.app
+```
+
+Known warning:
+
+```text
+The CFBundleVersion of an app extension ('1') must match that of its containing parent app ('395').
+```
+
+This warning did not block the local signed build, but should be fixed before a formal macOS distribution archive.
+
 ## Verified Archive Command
 
 This archive result was verified before switching the fork from upstream `main` to upstream `dev`. Re-run it on the current `dev` branch when a signed TestFlight archive is needed.
@@ -159,7 +266,7 @@ This archive result was verified before switching the fork from upstream `main` 
 From:
 
 ```text
-/Users/yunshi/codes/sing-box-for-apple
+<repo-root>
 ```
 
 Run:
@@ -185,7 +292,7 @@ On 2026-05-31 this completed with:
 The archive was generated at:
 
 ```text
-/Users/yunshi/codes/sing-box-for-apple/build/SFI.xcarchive
+<repo-root>/build/SFI.xcarchive
 ```
 
 ## Known Local State
@@ -193,3 +300,34 @@ The archive was generated at:
 - The working copy may have uncommitted `Localizable.xcstrings` changes created by Xcode string catalog updates.
 - Do not discard those changes unless the user explicitly asks.
 - `build/` and derived data are generated outputs. Keep the archive if the user needs it; derived data can be deleted.
+
+## macOS SFM Helper Notes
+
+The official downloaded SFM app can show:
+
+```text
+Failed to install helper service
+未能完成该操作。Operation not permitted
+```
+
+For the official app, the helper is:
+
+```text
+Label: io.nekohasekai.sfavt.helper
+Mach service: 287TTNZF8L.io.nekohasekai.sfavt.helper
+App bundle: /Applications/SFM.app
+Helper executable: /Applications/SFM.app/Contents/Helpers/RootHelper
+Helper plist: /Applications/SFM.app/Contents/Library/LaunchDaemons/io.nekohasekai.sfavt.helper.plist
+```
+
+Use non-destructive checks first:
+
+```bash
+launchctl print system/io.nekohasekai.sfavt.helper
+sfltool dumpbtm | rg -n -C 5 'SFM|sfavt|nekohasekai|RootHelper|287TTNZF8L|helper'
+osascript -e 'tell application "System Events" to get the name of every login item'
+```
+
+Also check System Settings > General > Login Items & Extensions, especially both "Open at Login" and "Allow in Background".
+
+Important: `sfltool resetbtm` resets the Background Task Management database globally. It can remove or change unrelated login/background item state, so only use it as a last resort after warning the user. After using it, restore affected login/background items manually in System Settings.

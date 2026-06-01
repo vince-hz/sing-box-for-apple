@@ -3,6 +3,8 @@
 xcuserdata/
 .DS_Store
 /build/
+/DerivedData/
+/.derivedData*/
 /sing-box.xcodeproj/project.pbxproj.back
 CLAUDE.md
 /.claude/
