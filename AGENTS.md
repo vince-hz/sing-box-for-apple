@@ -30,7 +30,7 @@ This fork is maintained for VinceBox iOS/TestFlight work.
 
 For iOS targets, keep `BASE_PACKAGE_IDENTIFIER = io.vince.sfavt.app` in sync with the main app bundle ID. The app derives runtime identifiers such as the packet tunnel provider, widget control kind, file provider domain, background task ID, and profile UTType from `BasePackageIdentifier`. Keep `APP_GROUP_IDENTIFIER = group.io.vince.sfavt` and `iCloud.io.vince.sfavt` unchanged unless the user explicitly asks to isolate containers.
 
-The iOS packet tunnel extension currently does not include the Multicast Networking entitlement. If Apple approves the entitlement later, re-add `com.apple.developer.networking.multicast` only where it is actually needed and regenerate the provisioning profile.
+Apple has approved Multicast Networking for the iOS packet tunnel extension. Keep `com.apple.developer.networking.multicast` enabled in `Extension/Extension.entitlements`, do not add it to unrelated iOS targets, and ensure the provisioning profile for `io.vince.sfavt.app.extension` includes it.
 
 ## Build Notes
 

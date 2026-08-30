@@ -98,20 +98,15 @@ Do not change it to `iCloud.$(BASE_PACKAGE_IDENTIFIER)` while the old iCloud con
 
 ## Multicast Networking
 
-The original iOS packet tunnel extension requested:
+The iOS packet tunnel extension uses:
 
 ```text
 com.apple.developer.networking.multicast
 ```
 
-This entitlement requires Apple approval. It is not required for the basic Packet Tunnel VPN entitlement, so it was removed from `Extension/Extension.entitlements` to let the iOS archive sign without waiting for Apple approval.
+Apple has approved this entitlement for VinceBox. Within the iOS app targets, it is enabled in `Extension/Extension.entitlements` for the packet tunnel App ID `io.vince.sfavt.app.extension`.
 
-If Apple approves Multicast Networking later:
-
-1. Enable the capability for the relevant App ID, most likely `io.vince.sfavt.app.extension`.
-2. Regenerate or refresh the provisioning profile.
-3. Re-add `com.apple.developer.networking.multicast` only to the target that needs it.
-4. Re-run a signed archive.
+Before the next TestFlight archive, regenerate or refresh that App ID's provisioning profile and confirm the signed extension contains `com.apple.developer.networking.multicast`. Do not add it to the main app or unrelated extensions.
 
 ## Libbox
 
