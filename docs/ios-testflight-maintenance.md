@@ -108,19 +108,19 @@ com.apple.developer.networking.multicast
 
 Apple has approved this entitlement for VinceBox. Within the iOS app targets, it is enabled in `Extension/Extension.entitlements` for the packet tunnel App ID `io.vince.sfavt.app.extension`.
 
-Before the next TestFlight archive, regenerate or refresh that App ID's provisioning profile and confirm the signed extension contains `com.apple.developer.networking.multicast`. Do not add it to the main app or unrelated extensions.
+The signed iOS archive produced on 2026-08-30 includes `com.apple.developer.networking.multicast` in the packet tunnel extension. Continue to verify this after refreshing its provisioning profile, and do not add it to the main app or unrelated extensions.
 
 ## Libbox
 
 `Libbox.xcframework` is required but ignored by Git. If it is missing, build it from the matching `SagerNet/sing-box` version.
 
-For upstream `dev` version `1.14.0-alpha.27`, build libbox from:
+For upstream `dev` version `1.14.0-rc.5`, build libbox from:
 
 ```text
-SagerNet/sing-box tag v1.14.0-alpha.27
+SagerNet/sing-box tag v1.14.0-rc.5
 ```
 
-The local `Libbox.xcframework` for the dev branch was rebuilt on 2026-05-31 and copied to:
+The local `Libbox.xcframework` for the dev branch was rebuilt on 2026-08-30 and copied to:
 
 ```text
 <repo-root>/Libbox.xcframework
@@ -136,7 +136,7 @@ tvos-arm64_x86_64-simulator
 macos-arm64_x86_64
 ```
 
-Using the older `v1.13.12` libbox with upstream `dev` causes Swift compile errors for missing APIs such as `LibboxCommandOutbounds`, `LibboxPlatformUser`, and crash/OOM-related libbox symbols.
+Using an older libbox with upstream `dev` causes Swift compile errors for missing APIs. For example, `v1.14.0-alpha.27` lacks the remote command, bridge, taildrop, and setup-option symbols required by `1.14.0-rc.5`.
 
 ## Verified Dev Build Command
 
