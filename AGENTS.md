@@ -25,6 +25,8 @@ This fork is maintained for VinceBox iOS/TestFlight work.
 - Intents extension: `io.vince.sfavt.app.intents`
 - Widget extension: `io.vince.sfavt.app.widget`
 - File provider extension: `io.vince.sfavt.app.fileprovider`
+- Share extension: `io.vince.sfavt.app.share`
+- Action extension: `io.vince.sfavt.app.action`
 - App group: `group.io.vince.sfavt`
 - iCloud container: `iCloud.io.vince.sfavt`
 

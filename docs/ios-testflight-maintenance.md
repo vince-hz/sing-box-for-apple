@@ -69,6 +69,8 @@ io.vince.sfavt.standalone
 io.vince.sfavt.system
 io.vince.sfavt.app.widget
 io.vince.sfavt.app.fileprovider
+io.vince.sfavt.app.share
+io.vince.sfavt.app.action
 ```
 
 Shared containers:
@@ -86,7 +88,7 @@ APP_GROUP_IDENTIFIER = group.io.vince.sfavt
 ICLOUD_CONTAINER_IDENTIFIER = iCloud.io.vince.sfavt
 ```
 
-`BasePackageIdentifier` is a runtime input, not just a label. It drives `AppConfiguration.extensionBundleID`, `widgetControlKind`, `fileProviderDomainID`, `profileUTType`, and `backgroundTaskID`. If the main app Bundle ID changes, update `BASE_PACKAGE_IDENTIFIER` for `SFI`, `Extension`, `IntentsExtension`, `WidgetExtension`, and `FileProviderExtension` at the same time.
+`BasePackageIdentifier` is a runtime input, not just a label. It drives `AppConfiguration.extensionBundleID`, `widgetControlKind`, `fileProviderDomainID`, `profileUTType`, and `backgroundTaskID`. If the main app Bundle ID changes, update `BASE_PACKAGE_IDENTIFIER` for `SFI`, `Extension`, `IntentsExtension`, `WidgetExtension`, `FileProviderExtension`, `ShareExtension`, and `ActionExtension` at the same time.
 
 `SFI/Info.plist` keeps the iCloud ubiquitous container key as a literal:
 
