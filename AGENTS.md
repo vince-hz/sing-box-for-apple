@@ -37,8 +37,8 @@ Apple has approved Multicast Networking for the iOS packet tunnel extension. Kee
 ## Build Notes
 
 - `Libbox.xcframework` is required locally and is ignored by Git.
-- For upstream `dev` at `1.14.0-rc.5`, use a `Libbox.xcframework` built from `SagerNet/sing-box` tag `v1.14.0-rc.5`.
-- The local libbox was rebuilt with the full Apple target on 2026-08-30 and includes iOS, iOS simulator, tvOS, tvOS simulator, and macOS universal slices.
+- For upstream `dev` at `1.15.0-alpha.15`, use a `Libbox.xcframework` built from `SagerNet/sing-box` tag `v1.15.0-alpha.15` (standard upstream Apple build without `with_gvisor`).
+- The local libbox was rebuilt with the full Apple target on 2026-11-28 and includes iOS, iOS simulator, tvOS, tvOS simulator, and macOS universal slices.
 - A signed iOS archive succeeded on 2026-08-30 with scheme `SFI`; the signed packet tunnel extension includes the Multicast Networking entitlement.
 - An unsigned iOS Release build succeeded on 2026-05-31 with scheme `SFI` after replacing libbox.
 - An unsigned macOS Release build succeeded on 2026-05-31 with scheme `SFM` after replacing libbox.

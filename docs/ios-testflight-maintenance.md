@@ -114,13 +114,25 @@ The signed iOS archive produced on 2026-08-30 includes `com.apple.developer.netw
 
 `Libbox.xcframework` is required but ignored by Git. If it is missing, build it from the matching `SagerNet/sing-box` version.
 
-For upstream `dev` version `1.14.0-rc.5`, build libbox from:
+For upstream `dev` version `1.15.0-alpha.15`, build libbox from:
 
 ```text
-SagerNet/sing-box tag v1.14.0-rc.5
+SagerNet/sing-box tag v1.15.0-alpha.15
 ```
 
-The local `Libbox.xcframework` for the dev branch was rebuilt on 2026-08-30 and copied to:
+Build with the standard upstream Apple target (without `with_gvisor`):
+
+```bash
+GOTOOLCHAIN=auto go run ./cmd/internal/build_libbox -target apple
+```
+
+Verify the iOS device slice before archiving (confirm `with_tailscale` is present and `with_gvisor` is absent):
+
+```bash
+strings Libbox.xcframework/ios-arm64/Libbox.framework/Libbox | grep with_tailscale
+```
+
+The local `Libbox.xcframework` for the dev branch was rebuilt on 2026-11-28 and copied to:
 
 ```text
 <repo-root>/Libbox.xcframework
